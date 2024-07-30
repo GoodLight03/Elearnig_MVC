@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head th:replace="~{fragment/fragments::header}">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!--Sidebar-->
+    <ul th:replace="~{fragment/fragments::sidebar}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{fragment/fragments::topbar}"></nav>
+            <!-- End of Topbar -->
+
+            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+                  th:action="@{/search-course/0}" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                           name="keyword"
+                           aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!-- Begin Page Content -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleAddCategoryModal"
+                    data-whatever="@mdo">Add new topic detail
+            </button>
+            <p th:if="${size == 0}">No topic detail</p>
+            <div th:if="${success}" class="text-center alert alert-success">
+                <p th:text="${success}">
+                </p>
+            </div>
+            <div th:if="${error}" class="text-center alert alert-danger">
+                <p th:text="${error}"></p>
+            </div>
+
+            <table class="table table-striped danhMucTable" th:if="${size > 0}">
+                <thead>
+                <tr>
+                    <th scope="col">Topics Detail Index</th>
+                    <th scope="col">Topics</th>
+                    <th scope="col">Question</th>
+                    <th scope="col">Question Type</th>
+                    <th scope="col">Action</th>
+                  
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr th:each="users : ${TopicsDetail}">
+                    <th scope="row" th:text="${users.id}"></th>
+                    <td th:text="${users.topic.name}"></td>
+                    <td th:text="${users.questions.question}"></td>
+                    <td th:text="${users.questions.type}"></td>
+                    <td>
+                        <a th:href="@{/update-topic/{id}(id= ${users.id})}" class="btn btn-primary">Update</a>
+                    </td>
+                    <td>
+                        <a th:if="${users.id} == true" th:href="@{/enable-users(id = ${users.id})}"
+                           class="btn btn-primary">Enable</a>
+                        <a th:href="@{/delete-topicDetail(id = ${users.id})}" class=" btn btn-danger">Delete</a>
+
+                    </td>
+                </tr> -->
+                </tbody>
+            </table>
+
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="~{fragment/fragments::footer}"></footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{fragment/fragments::scroll}"></a>
+
+<!--Add Categories Modal-->
+<div class="modal fade" id="exampleAddCategoryModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleAddCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleAddCategoryModalLabel">New Topic Detail</h5>
+            </div>
+            <div class="modal-body">
+                <form class="addTopicDetail">
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <label for="name" class="col-form-label">Topic:</label>
+                            <!-- File Button -->
+                            <select id="topic"  name="topic"
+                                    class="form-control">
+                                <option th:value="null">-SELECT-</option>
+                                <option th:each="category : ${topic}" th:value="${category.id}"
+                                        th:text="${category.name}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Number Read:</label>
+                        <input type="number" class="form-control" id="numRead"  name="numRead">
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Number Lister:</label>
+                        <input type="number" class="form-control" id="numListen"  name="numListen">
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Number Write:</label>
+                        <input type="number" class="form-control" id="numWrite"  name="numWrite">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btnSaveTopicDetail">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--End-->
+
+<!-- Edit Category Modal
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit category</h5>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/update-course}" method="put">
+                    <div class="form-group">
+                        <label for="idEdit" class="col-form-label">ID
+                        </label> <input type="text" class="form-control" id="idEdit" name="id" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameEdit" class="col-form-label">Category
+                            Name</label> <input type="text" class="form-control" id="nameEdit" name="name">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- End -->
+<!-- Bootstrap core JavaScript-->
+<div th:replace="~{fragment/fragments::script}"></div>
+
+<script th:src="@{/js/categories.js}"></script>
+<script>
+    $(document).ready(function () {
+        ajaxGet();
+        function ajaxGet() {
+
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8888/api/topicdetail/",
+                success: function (result) {
+                    $.each(result, function (i, topicdetail) {
+                        var TopicDetailRow = '<tr style="text-align: center;">' +
+                            '<td width="20%">' + topicdetail.id + '</td>' +
+                             '<td>' + topicdetail.topic.name + '</td>' +
+
+                             '<td>' + topicdetail.questions.question + '</td>' +
+                             '<td>' + topicdetail.questions.type + '</td>' +
+                     
+                            '<td>' + '<input type="hidden" value=' + topicdetail.id + '>'
+                            + '<button class="btn btn-primary updateTopicDetail" >Cập nhật</button>' +
+                            '   <button class="btn btn-danger deleteTopicDetail">Xóa</button></td>'
+                        '</tr>';
+
+                        $('.danhMucTable tbody').append(TopicDetailRow);
+                    });
+                },
+                error: function (e) {
+                    alert("Error: ", e);
+                    console.log("Error", e);
+                }
+            });
+          }
+        
+
+     $(document).on('click', '.addTopicDetail', function (event) {
+                event.preventDefault();
+                $('#exampleAddCategoryModal').modal();
+
+                $('.btnUpdateDetail').removeClass('btnUpdateDetail').addClass('btnSaveTopicDetail');
+                // $('#id').val('');
+                //  $('#numRead').val('');
+                //  $('#numListen').val('');
+                //  $('#numWrite').val('');
+                
+            });
+
+            $(document).on('click', '.btnSaveTopicDetail', function (event) {
+                event.preventDefault();
+                console.log("hello");
+                ajaxPost();
+            });
+            function ajaxPost() {
+                var formData = new FormData($('.addTopicDetail')[0]);
+                console.log(formData)
+                console.log(formData.get('topic'));
+                console.log(formData.get('numRead'));
+                console.log(formData.get('numListen'));
+                console.log(formData.get('numWrite'));
+                $.ajax({
+
+                    type: "POST",
+                    contentType: false,
+                    url: "http://localhost:8888/api/topicdetail/save",
+                   
+                    data: formData,
+                    processData: false,
+                    success: function (reponse) {
+                       window.location.reload();
+                        alert("Add success");
+
+                    },
+                    error: function (e) {
+                        alert("Error");
+
+                    }
+
+                });
+            };
+
+      
+        })
+            </script>
+
+</body>
+
+</html>
